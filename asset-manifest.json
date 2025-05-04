@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/ARresearchProject/static/css/main.e6c13ad2.css",
+    "main.js": "/ARresearchProject/static/js/main.174dc1e4.js",
+    "static/js/453.7fac46bf.chunk.js": "/ARresearchProject/static/js/453.7fac46bf.chunk.js",
+    "index.html": "/ARresearchProject/index.html",
+    "main.e6c13ad2.css.map": "/ARresearchProject/static/css/main.e6c13ad2.css.map",
+    "main.174dc1e4.js.map": "/ARresearchProject/static/js/main.174dc1e4.js.map",
+    "453.7fac46bf.chunk.js.map": "/ARresearchProject/static/js/453.7fac46bf.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.174dc1e4.js"
+  ]
+}
