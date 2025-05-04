@@ -1,4 +1,5 @@
-import ARScene from './components/ARScene';
+import React from 'react';
+import ARScene from './components/ARScene'; // Make sure the path is correct
 
 function App() {
   return (
