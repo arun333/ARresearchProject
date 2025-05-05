@@ -1,57 +1,68 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from "react";
 
-const ARScene = () => {
+const MarkerAR = () => {
+  const sceneRef = useRef(null);
+
   useEffect(() => {
-    const video = document.querySelector('#testVideo');
-    const plane = document.querySelector('#fullscreenVideo');
-    const marker = document.querySelector('a-marker');
+    const video = document.querySelector("#waterVideo");
+    const marker = document.querySelector("a-marker");
+    const plane = document.querySelector("#videoPlane");
 
-    if (video) {
-      video.play().catch((e) => console.warn("Video playback failed", e));
-    }
+    if (!video || !marker || !plane) return;
 
-    marker?.addEventListener('markerFound', () => {
-      plane?.setAttribute('visible', 'true');
-      plane?.emit('fadein');
+    // Pause initially
+    video.pause();
+    plane.setAttribute("visible", "false");
+
+    marker.addEventListener("markerFound", () => {
+      plane.setAttribute("visible", "true");
+      video.play().catch((err) => {
+        console.warn("Video play failed:", err);
+      });
     });
 
-    marker?.addEventListener('markerLost', () => {
-      plane?.setAttribute('visible', 'false');
+    marker.addEventListener("markerLost", () => {
+      video.pause();
+      plane.setAttribute("visible", "false");
     });
   }, []);
 
   return (
-    <div>
-      <a-scene embedded arjs>
-        <a-assets>
-          <video
-            id="testVideo"
-            src="https://cdn.pixabay.com/video/2024/09/29/233867_large.mp4"
-            loop
-            muted
-            playsInline
-            webkit-playsinline
-            crossOrigin="anonymous"
-          ></video>
-        </a-assets>
+    <a-scene
+      ref={sceneRef}
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      vr-mode-ui="enabled: false"
+      renderer="logarithmicDepthBuffer: true;"
+      style={{ width: "100%", height: "100%", position: "fixed", top: 0, left: 0, zIndex: 0 }}
+    >
+      <a-assets>
+        <video
+          id="waterVideo"
+          src="https://cdn.pixabay.com/video/2024/09/29/233867_large.mp4"
+          preload="auto"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsInline
+        ></video>
+      </a-assets>
 
-        <a-marker preset="hiro" emitevents="true">
-          <a-box position="0 0 0" visible="false"></a-box>
-        </a-marker>
+      <a-marker preset="hiro">
+        <a-video
+          id="videoPlane"
+          src="#waterVideo"
+          width="1.5"
+          height="1"
+          position="0 0 0"
+          rotation="-90 0 0"
+          visible="false"
+        ></a-video>
+      </a-marker>
 
-        <a-entity camera>
-          <a-entity
-            id="fullscreenVideo"
-            geometry="primitive: plane; height: 2.5; width: 4"
-            material="shader: flat; src: #testVideo; opacity: 0"
-            position="0 0 -1.5"
-            visible="false"
-            animation__fadein="property: material.opacity; from: 0; to: 1; dur: 1000; startEvents: fadein"
-          ></a-entity>
-        </a-entity>
-      </a-scene>
-    </div>
+      <a-entity camera></a-entity>
+    </a-scene>
   );
 };
 
-export default ARScene;
+export default MarkerAR;
